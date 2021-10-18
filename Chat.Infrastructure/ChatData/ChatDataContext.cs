@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.ChatData
 {
-    public class ChatDbContext : DbContext
+    public class ChatDataContext : DbContext
     {
-        public ChatDbContext(DbContextOptions<ChatDbContext> options)
+        public ChatDataContext(DbContextOptions<ChatDataContext> options)
             : base(options)
         {
             this.Database.Migrate();

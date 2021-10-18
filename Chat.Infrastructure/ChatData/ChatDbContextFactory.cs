@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.ChatData
 {
-    public class ChatDbContextFactory : DesignTimeDbContextFactoryBase<ChatDbContext>
+    public class ChatDataContextFactory : DesignTimeDbContextFactoryBase<ChatDataContext>
     {
-        protected override ChatDbContext CreateNewInstance(DbContextOptions<ChatDbContext> options)
+        protected override ChatDataContext CreateNewInstance(DbContextOptions<ChatDataContext> options)
         {
-            return new ChatDbContext(options);
+            return new ChatDataContext(options);
         }
     }
 }

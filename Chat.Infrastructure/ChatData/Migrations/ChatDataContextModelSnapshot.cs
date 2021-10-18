@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Chat.Infrastructure.ChatData.Migrations
 {
-    [DbContext(typeof(ChatDbContext))]
-    partial class ChatDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ChatDataContext))]
+    partial class ChatDataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Chat.Core.Entities.ChatConversation", b =>

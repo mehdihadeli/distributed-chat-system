@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="ChatData\Migrations" />
+    <Folder Include="IdentityData\Migrations" />
   </ItemGroup>
 
 </Project>

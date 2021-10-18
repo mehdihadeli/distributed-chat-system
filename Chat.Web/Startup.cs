@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Chat.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,6 +26,8 @@ namespace Chat.Web
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddInfrastructure(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
