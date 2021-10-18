@@ -2,6 +2,7 @@ using BlazorChat.Shared;
 using Chat.Application.Repositories;
 using Chat.Infrastructure.ChatData;
 using Chat.Infrastructure.IdentityData;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,13 @@ namespace Chat.Infrastructure
                 .AddEntityFrameworkStores<IdentityDataContext>();
 
             return services;
+        }
+
+        public static void UseInfrastructure(this IApplicationBuilder app)
+        {
+            using var scope = app.ApplicationServices.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            IdentitySeeder.SeedSuperAdminAsync(userManager, null).GetAwaiter().GetResult();
         }
     }
 }
