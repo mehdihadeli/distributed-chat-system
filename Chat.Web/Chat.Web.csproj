@@ -23,4 +23,9 @@
     <ProjectReference Include="..\Chat.Infrastructure\Chat.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\css\chat.css" />
+    <None Include="wwwroot\js\chat.js" />
+  </ItemGroup>
+
 </Project>

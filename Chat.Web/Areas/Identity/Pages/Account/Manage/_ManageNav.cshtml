@@ -1,4 +1,5 @@
-@inject SignInManager<IdentityUser> SignInManager
+@using BlazorChat.Shared
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

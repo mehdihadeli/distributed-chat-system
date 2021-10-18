@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Chat.Infrastructure;
+using Chat.Web.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,7 +23,18 @@ namespace Chat.Web
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddInfrastructure(Configuration);
+            services.AddSignalR();
+
+            services.AddCors(o => o.AddPolicy("ChatAppCorsPolicy",
+                builder =>
+                {
+                    builder
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowAnyOrigin();
+                }));
+
+            services.AddCustomIdentity(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +55,8 @@ namespace Chat.Web
 
             app.UseRouting();
 
+            app.UseCors("ChatAppCorsPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -57,6 +66,7 @@ namespace Chat.Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatSignalr");
             });
         }
     }

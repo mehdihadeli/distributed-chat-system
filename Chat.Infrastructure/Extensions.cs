@@ -1,3 +1,5 @@
+using BlazorChat.Shared;
+using Chat.Application.Repositories;
 using Chat.Infrastructure.ChatData;
 using Chat.Infrastructure.IdentityData;
 using Microsoft.AspNetCore.Identity;
@@ -12,13 +14,24 @@ namespace Chat.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDbContext<IdentityDataContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("IdentityDataContextConnection")));
-
             services.AddDbContext<ChatDataContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("ChatDataContextConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => { options.SignIn.RequireConfirmedAccount = false; })
+            AddCustomIdentity(services, configuration);
+
+            services.AddTransient<IChatRepository, ChatRepository>();
+            services.AddTransient<IIdentityRepository, IdentityRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomIdentity(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.AddDbContext<IdentityDataContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("IdentityDataContextConnection")));
+
+            services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = false; })
                 .AddEntityFrameworkStores<IdentityDataContext>();
 
             return services;
