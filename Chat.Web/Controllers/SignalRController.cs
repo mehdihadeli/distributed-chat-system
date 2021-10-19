@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
-using BlazorChat.Shared;
+using Chat.Application.DTOs;
+using Chat.Core.Entities;
 using Chat.Web.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -20,7 +21,7 @@ namespace Chat.Web.Controllers
         public async Task Test()
         {
             await _hubContext.Clients.All
-                .SendAsync("SendForReceiveMessage", new ChatMessage() { Id = 22 }, "mehdi@yahoo.com");
+                .SendAsync("SendForReceiveMessage", new SendMessageDto() { Message = "test" });
         }
     }
 }

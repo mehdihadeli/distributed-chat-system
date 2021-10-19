@@ -1,7 +1,13 @@
+using Chat.Application.DTOs;
+using Chat.Application.Services;
+using Chat.Core.Entities;
 using Chat.Infrastructure;
+using Chat.Infrastructure.Nats;
 using Chat.Web.Hubs;
+using Humanizer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +26,10 @@ namespace Chat.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<INatsBus, NatsBus>();
+            services.AddOptions<NatsOptions>().Bind(Configuration.GetSection("NatsOptions"))
+                .ValidateDataAnnotations();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -68,6 +78,17 @@ namespace Chat.Web
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/chatSignalr");
             });
+
+            var bus = app.ApplicationServices.GetRequiredService<INatsBus>();
+            var subscription = bus.Subscribe<SendMessageDto>(message =>
+            {
+                var hubContext = app.ApplicationServices.GetRequiredService<IHubContext<ChatHub>>();
+
+                hubContext.Clients
+                    //.User(eto.TargetUserId.ToString())
+                    .All
+                    .SendAsync("SendForReceiveMessage", message);
+            }, nameof(ChatMessage).Underscore());
         }
     }
 }

@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorChat.Shared;
 using Chat.Application.DTOs;
 using Chat.Application.Repositories;
+using Chat.Core.Entities;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 
 namespace Chat.Application.Services
@@ -11,11 +13,13 @@ namespace Chat.Application.Services
     {
         private readonly IChatRepository _chatRepository;
         private readonly IIdentityRepository _identityRepository;
+        private readonly INatsBus _natsBus;
 
-        public ChatService(IChatRepository chatRepository, IIdentityRepository identityRepository)
+        public ChatService(IChatRepository chatRepository, IIdentityRepository identityRepository, INatsBus natsBus)
         {
             _chatRepository = chatRepository;
             _identityRepository = identityRepository;
+            _natsBus = natsBus;
         }
 
         public async Task SendMessageAsync(SendMessageDto sendMessageDto)
@@ -45,6 +49,12 @@ namespace Chat.Application.Services
             });
 
             // Send to Message broker
+            _natsBus.Publish(sendMessageDto, nameof(ChatMessage).Underscore());
+        }
+
+        public Task<IEnumerable<ChatMessageDto>> LoadMessages(string userId)
+        {
+            return null;
         }
     }
 }

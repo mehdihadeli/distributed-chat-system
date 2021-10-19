@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorChat.Shared;
+using Chat.Core.Entities;
 
 namespace Chat.Application.Repositories
 {

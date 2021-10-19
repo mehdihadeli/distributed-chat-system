@@ -1,11 +1,4 @@
 ``` bash
-dotnet ef migrations add initial --context IdentityDataContext  -o "IdentityData\Migrations"
-dotnet ef database update --context IdentityDataContext
+dotnet ef migrations add initial --context ApplicationDataContext  -o "Data\Migrations"
+dotnet ef database update --context ApplicationDataContext
 ```
-
-```bash
-dotnet ef migrations add initial --context ChatDataContext  -o "ChatData\Migrations"
-dotnet ef database update --context ChatDataContext
-```
-
-

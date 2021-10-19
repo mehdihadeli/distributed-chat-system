@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using BlazorChat.Shared;
 using Chat.Application.Repositories;
+using Chat.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Chat.Infrastructure.IdentityData

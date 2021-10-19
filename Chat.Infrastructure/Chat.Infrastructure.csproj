@@ -16,16 +16,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NATS.Client" Version="0.12.0" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
     <ProjectReference Include="..\Chat.Core\Chat.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ChatData\Migrations" />
-    <Folder Include="IdentityData\Migrations" />
   </ItemGroup>
 
 </Project>

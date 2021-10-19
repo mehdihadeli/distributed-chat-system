@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using BlazorChat.Shared;
+using Chat.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Chat.Application.Repositories

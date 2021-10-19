@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using BlazorChat.Shared;
 using Chat.API.Controllers.ViewModels;
 using Chat.Application.DTOs;
 using Chat.Application.Services;
+using Chat.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -28,17 +28,17 @@ namespace Chat.API.Controllers
         [Route("send-message")]
         public async Task SendMessageAsync(SendMessageRequest request)
         {
-            var dto = new SendMessageDto()
+            var sendMessageDto = new SendMessageDto()
             {
                 Message = request.Message,
                 SenderEmail = request.SenderEmail,
                 TargetEmail = request.TargetEmail
             };
-            await _chatService.SendMessageAsync(dto);
+            await _chatService.SendMessageAsync(sendMessageDto);
 
-            await connection.StartAsync();
-            await connection.InvokeAsync("SendMessage",
-                new ChatMessage() { Id = 10 }, "mehdi@yahoo.com");
+            // directly send to signalr hub instead of broker
+            // await connection.StartAsync();
+            // await connection.InvokeAsync("SendMessage",sendMessageDto);
         }
     }
 }

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
-namespace BlazorChat.Shared
+namespace Chat.Core.Entities
 {
     public class ChatMessage
     {

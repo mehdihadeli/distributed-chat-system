@@ -1,0 +1,11 @@
+version: '3'
+services:
+
+  nats01:
+    image: nats:latest
+    container_name: nats01
+    entrypoint: /nats-server
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+      - "6222:6222"
