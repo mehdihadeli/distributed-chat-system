@@ -21,10 +21,14 @@ namespace Chat.Infrastructure.ChatData
             _dataContext = dataContext;
         }
 
-        public async Task<IList<ChatMessage>> GetMessagesAsync(int? numberOfMessages = null)
+        public async Task<IList<ChatMessage>> GetMessagesAsync(string userName, int numMessages = 50)
         {
-            var result = await _dataContext.ChatMessages.OrderBy(x => x.CreatedDate)
-                .Take(numberOfMessages ?? 50)
+            var result = await _dataContext.ChatMessages
+                .Include(x => x.FromUser)
+                .Include(x => x.ToUser)
+                .Where(x => x.ToUser.UserName == userName)
+                .OrderBy(x => x.CreatedDate)
+                .Take(numMessages)
                 .ToListAsync();
 
             return result;

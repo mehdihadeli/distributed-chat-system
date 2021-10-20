@@ -1,8 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Chat.API.Controllers.ViewModels;
 using Chat.Application.DTOs;
 using Chat.Application.Services;
-using Chat.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -41,6 +42,24 @@ namespace Chat.API.Controllers
             // await connection.InvokeAsync("SendMessage",sendMessageDto);
 
             return NoContent();
+        }
+
+        [HttpGet("load-messages/{userName}")]
+        public async Task<ActionResult<IEnumerable<ChatMessageDto>>> LoadMessages([FromRoute] string userName,
+            [FromQuery] int numberOfMessages = 50)
+        {
+            var messages = await _chatService.LoadMessagesByCount(userName, numberOfMessages);
+
+            return Ok(messages);
+        }
+
+        [HttpGet("load-messages-by-time/{userName}")]
+        public async Task<ActionResult<IEnumerable<ChatMessageDto>>> LoadMessagesByTime([FromRoute] string userName,
+            [FromQuery] DateTime dateTime)
+        {
+            var messages = await _chatService.LoadMessagesByTime(userName, dateTime);
+
+            return Ok(messages);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Chat.Application.Repositories
 {
     public interface IChatRepository
     {
-        Task<IList<ChatMessage>> GetMessagesAsync(int? numberOfMessages = 0);
+        Task<IList<ChatMessage>> GetMessagesAsync(string userName, int numMessages = 50);
         Task AddMessage(ChatMessage message);
     }
 }

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.API", "Chat.API\Chat.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Web", "Chat.Web\Chat.Web.csproj", "{DBE4C61B-5E07-4EEE-B8C4-7157C3A25DBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Console", "Chat.Console\Chat.Console.csproj", "{781D1DBD-E890-456A-9B43-5F767AF651D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{DBE4C61B-5E07-4EEE-B8C4-7157C3A25DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBE4C61B-5E07-4EEE-B8C4-7157C3A25DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBE4C61B-5E07-4EEE-B8C4-7157C3A25DBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{781D1DBD-E890-456A-9B43-5F767AF651D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{781D1DBD-E890-456A-9B43-5F767AF651D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{781D1DBD-E890-456A-9B43-5F767AF651D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{781D1DBD-E890-456A-9B43-5F767AF651D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

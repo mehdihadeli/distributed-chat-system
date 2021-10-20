@@ -1,5 +1,6 @@
 ﻿var BASE_API_ADDRESS = "https://localhost:7001/api";
 var SEND_URL = BASE_API_ADDRESS + "/chat/send-message";
+var LOAD_INITIAL_MESSAGES_URL = BASE_API_ADDRESS + "/chat/load-messages";
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatSignalr")
@@ -31,7 +32,7 @@ connection.on("SendForReceiveMessage", function (chatMessage) {
         + date.getMinutes() + ":"
         + date.getSeconds();
 
-    $('#MessageList').append(`<li style="color: dodgerblue"><strong><i class="fas fa-long-arrow-alt-right"></i> ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</strong></li>`);
+    $('#MessageList').append(`<li style="color: dodgerblue"><strong><i class="fas fa-long-arrow-alt-right"></i>📥 ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</strong></li>`);
 });
 
 function sendMessage(senderUserName, sender, e) {
@@ -64,7 +65,32 @@ function sendMessage(senderUserName, sender, e) {
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
-            $('#MessageList').append(`<li style="color: #34ce57"><strong><i class="fas fa-long-arrow-alt-right"></i> ${datetime} - ${senderUserName}: ${message}</strong></li>`);
+            $('#MessageList').append(`<li style="color: #34ce57"><strong><i class="fas fa-long-arrow-alt-right"></i>📤 ${datetime} - ${senderUserName}: ${message}</strong></li>`);
         }
     });
 }
+
+function loadInitialMessagesForUser(userName, numberOfMessages) {
+    $.ajax({
+        url: LOAD_INITIAL_MESSAGES_URL + "/" + userName + "?numberOfMessages=" + numberOfMessages,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data) {
+            data.forEach(chatMessage => {
+
+                var date = new Date(chatMessage.messageDate);
+                var datetime = date.getDate() + "/"
+                    + (date.getMonth() + 1) + "/"
+                    + date.getFullYear() + " @ "
+                    + date.getHours() + ":"
+                    + date.getMinutes() + ":"
+                    + date.getSeconds();
+
+                $('#MessageList').append(`<li style="color: dodgerblue"><strong><i class="fas fa-long-arrow-alt-right"></i>📥 ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</strong></li>`);
+            });
+        }
+    });
+}
+
+

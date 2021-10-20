@@ -6,14 +6,23 @@
 
 @section Styles {
     <link rel="stylesheet" href="@Url.Content("~/css/chat.css")"/>
+    <style type="text/css">
+     textarea {
+            overflow-y: scroll;
+            height: 100px;
+            resize: none; /* Remove this if you want the user to resize the textarea */
+        }
+    </style>
 }
 
 @section Scripts {
     <script src="https://www.unpkg.com/@@aspnet/signalr@1.0.27/dist/browser/signalr.js"></script>
     <script src="@Url.Content("~/js/chat.js")"></script>
+
+    <script>
+        loadInitialMessagesForUser('@HttpContext.User.Identity?.Name', 50);
+    </script>
 }
-
-
 
 <h1>Chat</h1>
 
