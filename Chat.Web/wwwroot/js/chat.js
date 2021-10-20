@@ -21,19 +21,23 @@ function reconnect() {
     setTimeout(startConnection, 2000);
 }
 
-connection.on("SendForReceiveMessage", function (message) {
-    console.log(message);
-    $('#MessageList').append('<li><strong><i class="fas fa-long-arrow-alt-right"></i> ' + message + '</strong></li>');
+connection.on("SendForReceiveMessage", function (chatMessage) {
+    console.log(chatMessage);
+    var date = new Date(chatMessage.messageDate);
+    var datetime = date.getDate() + "/"
+        + (date.getMonth() + 1) + "/"
+        + date.getFullYear() + " @ "
+        + date.getHours() + ":"
+        + date.getMinutes() + ":"
+        + date.getSeconds();
+
+    $('#MessageList').append(`<li style="color: dodgerblue"><strong><i class="fas fa-long-arrow-alt-right"></i> ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</strong></li>`);
 });
 
-connection.on("ReceiveChatNotification", function (message) {
-    console.log(message);
-});
-
-function sendMessage(senderEmail, sender, e) {
+function sendMessage(senderUserName, sender, e) {
     e.preventDefault();
 
-    var targetEmail = $('#TargetEmail').val();
+    var targetUserName = $('#TargetUserName').val();
     var message = $('#Message').val();
     $('#Message').val('');
 
@@ -47,14 +51,20 @@ function sendMessage(senderEmail, sender, e) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            targetEmail: targetEmail,
-            senderEmail: senderEmail,
+            targetUserName: targetUserName,
+            senderUserName: senderUserName,
             message: message
         }),
         dataType: 'json',
-        success: function (data) {
-            $('#MessageList')
-                .append('<li><i class="fas fa-long-arrow-alt-left"></i> ' + abp.currentUser.userName + ': ' + message + '</li>');
+        success: function () {
+            var currentdate = new Date();
+            var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth() + 1) + "/"
+                + currentdate.getFullYear() + " @ "
+                + currentdate.getHours() + ":"
+                + currentdate.getMinutes() + ":"
+                + currentdate.getSeconds();
+            $('#MessageList').append(`<li style="color: #34ce57"><strong><i class="fas fa-long-arrow-alt-right"></i> ${datetime} - ${senderUserName}: ${message}</strong></li>`);
         }
     });
 }

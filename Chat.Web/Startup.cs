@@ -33,6 +33,9 @@ namespace Chat.Web
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            var idProvider = new CustomUserIdProvider();
+
+            services.AddSingleton<IUserIdProvider>(idProvider);
             services.AddSignalR();
 
             services.AddCors(o => o.AddPolicy("ChatAppCorsPolicy",
@@ -80,13 +83,12 @@ namespace Chat.Web
             });
 
             var bus = app.ApplicationServices.GetRequiredService<INatsBus>();
-            var subscription = bus.Subscribe<SendMessageDto>(message =>
+            var subscription = bus.Subscribe<ChatMessageDto>(message =>
             {
                 var hubContext = app.ApplicationServices.GetRequiredService<IHubContext<ChatHub>>();
 
                 hubContext.Clients
-                    //.User(eto.TargetUserId.ToString())
-                    .All
+                    .User(message.TargetUserName)
                     .SendAsync("SendForReceiveMessage", message);
             }, nameof(ChatMessage).Underscore());
         }

@@ -26,19 +26,21 @@ namespace Chat.API.Controllers
 
         [HttpPost]
         [Route("send-message")]
-        public async Task SendMessageAsync(SendMessageRequest request)
+        public async Task<ActionResult> SendMessageAsync(SendMessageRequest request)
         {
-            var sendMessageDto = new SendMessageDto()
+            var sendMessageDto = new SendMessageDto
             {
                 Message = request.Message,
-                SenderEmail = request.SenderEmail,
-                TargetEmail = request.TargetEmail
+                SenderUserName = request.SenderUserName,
+                TargetUserName = request.TargetUserName
             };
             await _chatService.SendMessageAsync(sendMessageDto);
 
             // directly send to signalr hub instead of broker
             // await connection.StartAsync();
             // await connection.InvokeAsync("SendMessage",sendMessageDto);
+
+            return NoContent();
         }
     }
 }

@@ -56,6 +56,7 @@ namespace Chat.API
 
             app.UseCors("ChatApiCorsPolicy");
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

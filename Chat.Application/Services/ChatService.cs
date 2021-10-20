@@ -24,32 +24,39 @@ namespace Chat.Application.Services
 
         public async Task SendMessageAsync(SendMessageDto sendMessageDto)
         {
-            if (string.IsNullOrEmpty(sendMessageDto.SenderEmail))
-                throw new BadHttpRequestException("sender email address can't be null.");
+            if (string.IsNullOrEmpty(sendMessageDto.SenderUserName))
+                throw new BadHttpRequestException("sender userName can't be null.");
 
-            if (string.IsNullOrEmpty(sendMessageDto.TargetEmail))
-                throw new BadHttpRequestException("target email address can't be null.");
+            if (string.IsNullOrEmpty(sendMessageDto.TargetUserName))
+                throw new BadHttpRequestException("target userName can't be null.");
 
-            var sender = await _identityRepository.GetUserByEmailAsync(sendMessageDto.SenderEmail);
-            var target = await _identityRepository.GetUserByEmailAsync(sendMessageDto.TargetEmail);
+            var sender = await _identityRepository.GetUserByNameAsync(sendMessageDto.SenderUserName);
+            var target = await _identityRepository.GetUserByNameAsync(sendMessageDto.TargetUserName);
 
             if (sender is null)
-                throw new Exception($"sender user with email address '{sendMessageDto.SenderEmail}' not found.");
+                throw new Exception($"sender user with userName '{sendMessageDto.SenderUserName}' not found.");
 
             if (target is null)
-                throw new Exception($"target user with email address '{sendMessageDto.TargetEmail}' not found.");
+                throw new Exception($"target user with userName '{sendMessageDto.TargetUserName}' not found.");
 
-            // save history in database
-            await _chatRepository.AddMessage(new ChatMessage()
+            // Save message history in database
+            var messageHistory = new ChatMessage
             {
                 Message = sendMessageDto.Message,
                 CreatedDate = DateTime.Now,
                 FromUserId = sender.Id,
                 ToUserId = target.Id,
-            });
+            };
+            await _chatRepository.AddMessage(messageHistory);
 
             // Send to Message broker
-            _natsBus.Publish(sendMessageDto, nameof(ChatMessage).Underscore());
+            _natsBus.Publish(new ChatMessageDto
+            {
+                Message = sendMessageDto.Message,
+                MessageDate = messageHistory.CreatedDate,
+                SenderUserName = sendMessageDto.SenderUserName,
+                TargetUserName = target.UserName
+            }, nameof(ChatMessage).Underscore());
         }
 
         public Task<IEnumerable<ChatMessageDto>> LoadMessages(string userId)

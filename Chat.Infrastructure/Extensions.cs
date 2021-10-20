@@ -1,3 +1,4 @@
+using System;
 using Chat.Application.Repositories;
 using Chat.Application.Services;
 using Chat.Core.Entities;
@@ -36,7 +37,19 @@ namespace Chat.Infrastructure
             services.AddDbContext<ApplicationDataContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("ChatDataContextConnection")));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = false; })
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    //https://www.yogihosting.com/aspnet-core-identity-user-lockout/
+                    options.Lockout.AllowedForNewUsers = true;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                    options.Lockout.MaxFailedAccessAttempts = 3;
+                })
                 .AddEntityFrameworkStores<ApplicationDataContext>();
 
             return services;

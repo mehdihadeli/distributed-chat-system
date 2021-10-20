@@ -13,14 +13,14 @@ namespace Chat.Infrastructure.IdentityData
             var firstUser = new ApplicationUser
             {
                 Email = "mehdi@yahoo.com",
-                UserName = "mehdi@yahoo.com",
+                UserName = "mehdi",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
             var secondUser = new ApplicationUser
             {
                 Email = "mehdi1@yahoo.com",
-                UserName = "mehdi1@yahoo.com",
+                UserName = "mehdi1",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -28,7 +28,7 @@ namespace Chat.Infrastructure.IdentityData
             var thirdUser = new ApplicationUser
             {
                 Email = "mehdi2@yahoo.com",
-                UserName = "mehdi2@yahoo.com",
+                UserName = "mehdi2",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true
             };
@@ -39,17 +39,17 @@ namespace Chat.Infrastructure.IdentityData
 
             if (user1 == null)
             {
-                await userManager.CreateAsync(firstUser, "Mehdi_000000");
+                await userManager.CreateAsync(firstUser, "000000");
             }
 
             if (user2 == null)
             {
-                await userManager.CreateAsync(secondUser, "Mehdi_000000");
+                await userManager.CreateAsync(secondUser, "000000");
             }
 
             if (user3 == null)
             {
-                await userManager.CreateAsync(thirdUser, "Mehdi_000000");
+                await userManager.CreateAsync(thirdUser, "000000");
             }
         }
     }

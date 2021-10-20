@@ -18,5 +18,10 @@ namespace Chat.Infrastructure.IdentityData
         {
             return await _userManager.FindByEmailAsync(userEmail);
         }
+
+        public async Task<ApplicationUser> GetUserByNameAsync(string userName)
+        {
+            return await _userManager.FindByNameAsync(userName);
+        }
     }
 }
