@@ -22,7 +22,7 @@ namespace Chat.Infrastructure
         {
             AddCustomIdentity(services, configuration);
 
-            services.AddTransient<IChatRepository, InMemoryChatRepository>();
+            services.AddTransient<IChatRepository, EFChatRepository>();
             services.AddTransient<IIdentityRepository, IdentityRepository>();
             services.AddSingleton<INatsBus, NatsBus>();
 

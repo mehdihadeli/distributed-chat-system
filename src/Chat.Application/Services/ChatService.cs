@@ -6,7 +6,6 @@ using Chat.Application.DTOs;
 using Chat.Application.Repositories;
 using Chat.Core.Entities;
 using Humanizer;
-using Microsoft.AspNetCore.Http;
 
 namespace Chat.Application.Services
 {
