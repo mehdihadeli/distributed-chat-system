@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Chat.API.ViewModels;
 using Chat.Application.DTOs;
@@ -31,7 +32,7 @@ namespace Chat.API.Controllers
                 SenderUserName = request.SenderUserName,
                 TargetUserName = request.TargetUserName,
             };
-           var res = await _chatService.SendMessageAsync(sendMessageDto);
+            var res = await _chatService.SendMessageAsync(sendMessageDto);
 
             return Ok(res);
         }
@@ -50,6 +51,16 @@ namespace Chat.API.Controllers
             [FromQuery] DateTime dateTime)
         {
             var messages = await _chatService.LoadMessagesByTime(userName, dateTime);
+
+            return Ok(messages);
+        }
+
+        [HttpGet("load-messages-from-startup-time/{userName}")]
+        public async Task<ActionResult<IEnumerable<ChatMessageDto>>> LoadMessagesFromStartupTime([FromRoute] string
+            userName, [FromQuery] DateTime startupTime)
+        {
+            // var applicationStartTime = Process.GetCurrentProcess().StartTime;
+            var messages = await _chatService.LoadMessagesByTime(userName, startupTime);
 
             return Ok(messages);
         }
