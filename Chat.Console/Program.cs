@@ -65,10 +65,20 @@ namespace Chat.Console
             {
                 foreach (var chatMessageDto in result)
                 {
-                    System.Console.ForegroundColor = ConsoleColor.Cyan;
-                    System.Console.WriteLine(
-                        $"<- {chatMessageDto.MessageDate} - {chatMessageDto.SenderUserName}: {chatMessageDto.Message}");
-                    System.Console.ResetColor();
+                    if (chatMessageDto.SenderUserName == userName)
+                    {
+                        System.Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine(
+                            $"-> {chatMessageDto.MessageDate} - {chatMessageDto.SenderUserName}: {chatMessageDto.Message}");
+                        System.Console.ResetColor();
+                    }
+                    else
+                    {
+                        System.Console.ForegroundColor = ConsoleColor.Cyan;
+                        System.Console.WriteLine(
+                            $"<- {chatMessageDto.MessageDate} - {chatMessageDto.SenderUserName}: {chatMessageDto.Message}");
+                        System.Console.ResetColor();
+                    }
                 }
             }
         }

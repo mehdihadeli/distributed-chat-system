@@ -1,4 +1,4 @@
-namespace Chat.API.Controllers.ViewModels
+namespace Chat.API.ViewModels
 {
     public class SendMessageRequest
     {

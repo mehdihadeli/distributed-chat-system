@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Chat.Application.Repositories;
 using Chat.Core.Entities;
 using Chat.Infrastructure.Data;
-using Chat.Infrastructure.IdentityData;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chat.Infrastructure.ChatData
 {
-    public class ChatRepository : IChatRepository
+    public class EFChatRepository : IChatRepository
     {
         private readonly ApplicationDataContext _dataContext;
         private readonly ApplicationDataContext dataContext;
 
-        public ChatRepository(ApplicationDataContext dataContext)
+        public EFChatRepository(ApplicationDataContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -26,9 +24,22 @@ namespace Chat.Infrastructure.ChatData
             var result = await _dataContext.ChatMessages
                 .Include(x => x.FromUser)
                 .Include(x => x.ToUser)
-                .Where(x => x.ToUser.UserName == userName)
+                .Where(x => x.ToUser.UserName == userName || x.FromUser.UserName == userName)
                 .OrderBy(x => x.CreatedDate)
                 .Take(numMessages)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<IList<ChatMessage>> GetMessagesFromDateAsync(string userName, DateTime fromDate)
+        {
+            var result = await _dataContext.ChatMessages
+                .Include(x => x.FromUser)
+                .Include(x => x.ToUser)
+                .Where(x => x.ToUser.UserName == userName || x.FromUser.UserName == userName)
+                .Where(x => x.CreatedDate >= fromDate)
+                .OrderBy(x => x.CreatedDate)
                 .ToListAsync();
 
             return result;
@@ -38,6 +49,14 @@ namespace Chat.Infrastructure.ChatData
         {
             await _dataContext.ChatMessages.AddAsync(message);
             await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task<ChatMessage> GetById(long id)
+        {
+            return await _dataContext.ChatMessages
+                .Include(x => x.FromUser)
+                .Include(x => x.ToUser)
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
     }
 }

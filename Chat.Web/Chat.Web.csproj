@@ -8,6 +8,8 @@
     <PackageReference Include="Humanizer.Core" Version="2.11.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -27,6 +29,10 @@
   <ItemGroup>
     <None Include="wwwroot\css\chat.css" />
     <None Include="wwwroot\js\chat.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\lib\sweetalert\sweetalert.min.js" />
   </ItemGroup>
 
 </Project>

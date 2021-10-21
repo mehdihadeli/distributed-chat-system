@@ -32,7 +32,7 @@ connection.on("SendForReceiveMessage", function (chatMessage) {
         + date.getMinutes() + ":"
         + date.getSeconds();
 
-    $('#MessageList').append(`<li style="color: dodgerblue"><strong><i class="fas fa-long-arrow-alt-right"></i>📥 ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</strong></li>`);
+    $('#MessageList').append(`<li style="color: dodgerblue"><i class="fas fa-cloud-download-alt"></i> ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</li>`);
 });
 
 function sendMessage(senderUserName, sender, e) {
@@ -65,7 +65,14 @@ function sendMessage(senderUserName, sender, e) {
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
-            $('#MessageList').append(`<li style="color: #34ce57"><strong><i class="fas fa-long-arrow-alt-right"></i>📤 ${datetime} - ${senderUserName}: ${message}</strong></li>`);
+            $('#MessageList').append(`<li style="color: #34ce57"><i class="fas fa-cloud-upload-alt"></i> ${datetime} - ${senderUserName}: ${message}</li>`);
+        },
+        error: function (request, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: request.responseJSON.detail,
+            });
         }
     });
 }
@@ -86,8 +93,17 @@ function loadInitialMessagesForUser(userName, numberOfMessages) {
                     + date.getHours() + ":"
                     + date.getMinutes() + ":"
                     + date.getSeconds();
-
-                $('#MessageList').append(`<li style="color: dodgerblue"><strong><i class="fas fa-long-arrow-alt-right"></i>📥 ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</strong></li>`);
+                if (chatMessage.senderUserName === userName)
+                    $('#MessageList').append(`<li style="color: #34ce57"><i class="fas fa-cloud-upload-alt"></i> ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</li>`);
+                else
+                    $('#MessageList').append(`<li style="color: dodgerblue"><i class="fas fa-cloud-download-alt"></i> ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</li>`);
+            });
+        },
+        error: function (request, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: request.responseJSON.detail,
             });
         }
     });
