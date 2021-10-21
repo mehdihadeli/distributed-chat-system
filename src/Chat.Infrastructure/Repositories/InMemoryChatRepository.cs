@@ -12,14 +12,16 @@ namespace Chat.Infrastructure.Repositories
     {
         private static readonly List<ChatMessage> InMemoryMessageHistory = new();
 
-        public Task<IList<ChatMessage>> GetMessagesAsync(string userName, int numMessages = 50)
+        public Task<IList<ChatMessage>> GetMessagesAsync(string userName, int? numMessages)
         {
-            var result = InMemoryMessageHistory
+            var query = InMemoryMessageHistory
                 .Where(x => x.ToUser.UserName == userName || x.FromUser.UserName == userName)
-                .OrderBy(x => x.CreatedDate)
-                .Take(numMessages).ToList() as IList<ChatMessage>;
+                .OrderBy(x => x.CreatedDate);
 
-            return Task.FromResult(result);
+            if (numMessages is not null)
+                return Task.FromResult<IList<ChatMessage>>(query.Take((int)numMessages).ToList());
+
+            return Task.FromResult<IList<ChatMessage>>(query.ToList());
         }
 
         public Task<IList<ChatMessage>> GetMessagesFromDateAsync(string userName, DateTime fromDate)

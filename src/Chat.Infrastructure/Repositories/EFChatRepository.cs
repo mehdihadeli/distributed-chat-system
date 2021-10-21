@@ -12,24 +12,24 @@ namespace Chat.Infrastructure.ChatData
     public class EFChatRepository : IChatRepository
     {
         private readonly ApplicationDataContext _dataContext;
-        private readonly ApplicationDataContext dataContext;
 
         public EFChatRepository(ApplicationDataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
-        public async Task<IList<ChatMessage>> GetMessagesAsync(string userName, int numMessages = 50)
+        public async Task<IList<ChatMessage>> GetMessagesAsync(string userName, int? numMessages)
         {
-            var result = await _dataContext.ChatMessages
+            var query = _dataContext.ChatMessages
                 .Include(x => x.FromUser)
                 .Include(x => x.ToUser)
                 .Where(x => x.ToUser.UserName == userName || x.FromUser.UserName == userName)
-                .OrderBy(x => x.CreatedDate)
-                .Take(numMessages)
-                .ToListAsync();
+                .OrderBy(x => x.CreatedDate);
 
-            return result;
+            if (numMessages is not null)
+                return await query.Take((int)numMessages).ToListAsync();
+
+            return await query.ToListAsync();
         }
 
         public async Task<IList<ChatMessage>> GetMessagesFromDateAsync(string userName, DateTime fromDate)

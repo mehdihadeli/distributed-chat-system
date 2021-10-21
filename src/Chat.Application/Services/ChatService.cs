@@ -66,7 +66,7 @@ namespace Chat.Application.Services
             return messageHistory.Id;
         }
 
-        public async Task<IEnumerable<ChatMessageDto>> LoadMessagesByCount(string userName, int numMessages = 50)
+        public async Task<IEnumerable<ChatMessageDto>> LoadMessagesByCount(string userName, int? numMessages)
         {
             var result = (await _chatRepository.GetMessagesAsync(userName, numMessages)).Select(x => new ChatMessageDto
             {

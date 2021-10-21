@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Chat.API.ViewModels;
 using Chat.Application.DTOs;
@@ -37,11 +38,49 @@ namespace Chat.API.Controllers
             return Ok(res);
         }
 
+        /// <summary>
+        /// Both sent and received messages
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="numberOfMessages"></param>
+        /// <returns></returns>
         [HttpGet("load-messages/{userName}")]
         public async Task<ActionResult<IEnumerable<ChatMessageDto>>> LoadMessages([FromRoute] string userName,
-            [FromQuery] int numberOfMessages = 50)
+            [FromQuery] int? numberOfMessages = null)
         {
             var messages = await _chatService.LoadMessagesByCount(userName, numberOfMessages);
+
+            return Ok(messages);
+        }
+
+        /// <summary>
+        /// Only received messages
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="numberOfMessages"></param>
+        /// <returns></returns>
+        [HttpGet("load-received-messages/{userName}")]
+        public async Task<ActionResult<IEnumerable<ChatMessageDto>>> LoadReceivedMessages([FromRoute] string userName,
+            [FromQuery] int? numberOfMessages = null)
+        {
+            var messages = await _chatService.LoadMessagesByCount(userName, numberOfMessages);
+            messages = messages.Where(x => x.TargetUserName == userName);
+
+            return Ok(messages);
+        }
+
+        /// <summary>
+        /// Only sent messages
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="numberOfMessages"></param>
+        /// <returns></returns>
+        [HttpGet("load-sent-messages/{userName}")]
+        public async Task<ActionResult<IEnumerable<ChatMessageDto>>> LoadSentMessages([FromRoute] string userName,
+            [FromQuery] int? numberOfMessages = null)
+        {
+            var messages = await _chatService.LoadMessagesByCount(userName, numberOfMessages);
+            messages = messages.Where(x => x.SenderUserName == userName);
 
             return Ok(messages);
         }
