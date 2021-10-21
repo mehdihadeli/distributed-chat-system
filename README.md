@@ -30,19 +30,24 @@ In above picture, we can see the data-flow that we implemented with using [Conso
 
 
 ## How to run
+For running NATS on our system we can use [docker-compose.yaml](./docker-compose.yaml) file, and run bellow command for running NATS
 
-### WEB UI
+``` cmd
+ docker-compose -f .\docker-compose.yaml up
+```
+
+### WEB UI Client
 For running our system with using [WEB UI](#chat-system---web-ui) we need to run our [MVC Application](./src/Chat.Web) as client and [API](./src/Chat.API) as a service.
 
-```
-dotnet run --project src/Chat.API/Chat.API.csproj
-dotnet run --project src/Chat.Web/Chat.Web.csproj
+``` cmd
+.\scripts\api.bat
+.\scripts\web-client.bat
 ```
 
 Then after these two application were up and running, our API service will be host on `https://localhost:7001` and our MVC application will be host on `https://localhost:5001`.
 Now on `https://localhost:5001` address we can create some new user for chatting purpose. In seed of our application there are some predefined users with below information:
 
-``` bash
+``` cmd
 Email: mehdi@yahoo.com
 UserName: mehdi
 Password: 000000
@@ -60,4 +65,18 @@ Now we can chat between our different users with different session in browser In
 
 ![](./assets/chat-web.png)
 
-### Console
+### Console Client
+
+For running our system with using [Console Application](#chat-system---console) we need to run our [API](./src/Chat.API) as a service also we need to run multiple [Console Application](./src/Chat.Console) as clients.
+
+``` cmd
+.\scripts\api.bat
+```
+Then run multiple console client with this command:
+
+``` cmd
+.\scripts\console-client.bat
+```
+After entering our user name and destination user name for chat we can chat between our clients.
+
+![](./assets/console-client.png)
