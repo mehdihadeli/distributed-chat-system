@@ -27,3 +27,37 @@ In above picture, we can see the data-flow that we implemented with using [Conso
 1) Client1 or first [Console Application](./src/Chat.Console) sends a message data to our [API](./src/Chat.API) service through a REST call.
 2) The message data is processed in our [API](./src/Chat.API) service and API service publishes an event to our NATS message broker, that holds the data that will be sent to Client 2.
 3) Our Client2 [Console Application](./src/Chat.Console), that is subscribed to that event through our NATS message broker, receives it via a event handler.
+
+
+## How to run
+
+### WEB UI
+For running our system with using [WEB UI](#chat-system---web-ui) we need to run our [MVC Application](./src/Chat.Web) as client and [API](./src/Chat.API) as a service.
+
+```
+dotnet run --project src/Chat.API/Chat.API.csproj
+dotnet run --project src/Chat.Web/Chat.Web.csproj
+```
+
+Then after these two application were up and running, our API service will be host on `https://localhost:7001` and our MVC application will be host on `https://localhost:5001`.
+Now on `https://localhost:5001` address we can create some new user for chatting purpose. In seed of our application there are some predefined users with below information:
+
+``` bash
+Email: mehdi@yahoo.com
+UserName: mehdi
+Password: 000000
+
+Email: mehdi1@yahoo.com
+UserName: mehdi1
+Password: 000000
+
+Email: mehdi2@yahoo.com
+UserName: mehdi2
+Password: 000000
+```
+
+Now we can chat between our different users with different session in browser Incognito Mode.
+
+![](./assets/chat-web.png)
+
+### Console
