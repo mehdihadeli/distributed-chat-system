@@ -58,7 +58,15 @@ namespace Chat.Infrastructure
 
         public static void UseInfrastructure(this IApplicationBuilder app)
         {
+            MigrateDatabase(app);
             SeedIdentity(app);
+        }
+
+        private static void MigrateDatabase(IApplicationBuilder app)
+        {
+            using var scope = app.ApplicationServices.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDataContext>();
+            context.Database.Migrate();
         }
 
         private static void SeedIdentity(IApplicationBuilder app)
