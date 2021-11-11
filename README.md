@@ -1,3 +1,10 @@
+- [Distributed Chat System](#distributed-chat-system)
+  - [Chat System - WEB UI](#chat-system---web-ui) 
+  - [Chat System - Console](#chat-system---console)
+  - [How to run](#how-to-run)
+    - [WEB UI Client](#web-ui-client)
+    - [Console Client](#console-client)
+
 # Distributed Chat System
 
 For implementing this system I used two different Client UI:
@@ -80,3 +87,26 @@ Then run multiple console client with this command:
 After entering our user name and destination user name for chat we can chat between our clients.
 
 ![](./assets/console-client.png)
+
+## Dockerize
+For creating image for API we should execute bellow command
+``` powershell
+docker build -t chat.api . -f API.Dockerfile 
+```
+
+Because our app runs on https port, Kestrel can’t start because no certificate was specified and no developer certificate could be found [Link1](https://www.yogihosting.com/docker-https-aspnet-core/), [Link2](https://www.programmingwithwolfgang.com/asp-net-core-with-https-in-docker).
+
+We can create a certificate with the following command:
+
+``` powershell
+dotnet dev-certs https --clean
+dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\aspnetapp.pfx -p 000000
+dotnet dev-certs https --trust
+```
+
+Now for running our API we run this command:
+
+``` powershell
+docker run  -p 7001:7001 -p 7000:7000  -e ASPNETCORE_Kestrel__Certificates__Default__Password="000000" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v $env:USERPROFILE\.aspnet\https:/https/ chat.api
+```
+
