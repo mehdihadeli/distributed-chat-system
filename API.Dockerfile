@@ -1,11 +1,14 @@
+# https://github.com/NuGet/Home/issues/10491
+# https://devblogs.microsoft.com/nuget/microsoft-author-signing-certificate-update/
 
 # the first, heavier image to build your code
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS builder
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS builder
 
 # Setup working directory for the project	 
 WORKDIR /app
 
+RUN curl -o /usr/local/share/ca-certificates/verisign.crt -SsL https://crt.sh/?d=1039083 && update-ca-certificates
 COPY ./src/Chat.Core/Chat.Core.csproj ./src/Chat.Core/ 
 COPY ./src/Chat.Application/Chat.Application.csproj ./src/Chat.Application/
 COPY ./src/Chat.Infrastructure/Chat.Infrastructure.csproj ./src/Chat.Infrastructure/
@@ -32,7 +35,7 @@ RUN dotnet publish -c Release --no-build -o out
 
 
 # second, final, lighter image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal
 
 # Setup working directory for the project  
 WORKDIR /app
