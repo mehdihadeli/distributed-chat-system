@@ -1,11 +1,59 @@
 version: '3'
 services:
 
-  nats01:
+  nats:
     image: nats:latest
-    container_name: nats01
+    container_name: nats
+    restart: on-failure
+    expose:
+      - "4222"
     entrypoint: /nats-server
     ports:
       - "4222:4222"
       - "8222:8222"
-      - "6222:6222"
+      - "6222:6222"    
+  
+  sqlexpress:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+        - ACCEPT_EULA=Y
+        - SA_PASSWORD=Your_password123
+    ports:
+        - "1433:1433"
+      
+  chat.api:
+    container_name: chat.api
+    ports:
+        - '7001:7001'
+        - '7000:7000'
+    environment:
+        - "ASPNETCORE_Kestrel__Certificates__Default__Password=${Certificate_Password}"
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+        - '${USERPROFILE}/.aspnet/https:/https/'
+    restart: on-failure
+    depends_on:
+      - nats
+      - sqlexpress
+    build: 
+      context: .
+      dockerfile: API.Dockerfile
+      
+  chat.web:
+    container_name: chat.web
+    ports:
+        - '5001:5001'
+        - '5000:5000'
+    environment:
+        - "ASPNETCORE_Kestrel__Certificates__Default__Password=${Certificate_Password}"
+        - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+        - '${USERPROFILE}/.aspnet/https:/https/'
+    restart: on-failure
+    depends_on:
+      - nats
+      - sqlexpress
+    build: 
+      context: .
+      dockerfile: Web.Dockerfile
+      

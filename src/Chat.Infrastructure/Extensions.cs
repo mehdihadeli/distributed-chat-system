@@ -58,8 +58,8 @@ namespace Chat.Infrastructure
 
         public static void UseInfrastructure(this IApplicationBuilder app)
         {
-            MigrateDatabase(app);
-            SeedIdentity(app);
+             MigrateDatabase(app);
+             SeedIdentity(app);
         }
 
         private static void MigrateDatabase(IApplicationBuilder app)

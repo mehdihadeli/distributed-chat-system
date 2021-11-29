@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Chat.Application.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NATS.Client;
 using Newtonsoft.Json;
@@ -11,12 +12,13 @@ namespace Chat.Infrastructure.Nats
     {
         private readonly IConnection _connection;
 
-        public NatsBus(IOptions<NatsOptions> natsOptions)
+        public NatsBus(IOptions<NatsOptions> natsOptions, ILogger<NatsBus> logger)
         {
             ConnectionFactory factory = new ConnectionFactory();
 
             var options = ConnectionFactory.GetDefaultOptions();
             options.Url = natsOptions.Value.Address; //"nats://localhost:4222";
+            logger.LogInformation(options.Url);
             _connection = factory.CreateConnection(options);
         }
 

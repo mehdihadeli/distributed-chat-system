@@ -99,7 +99,11 @@ namespace Chat.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapGet("/", context => context.Response.WriteAsync("Chat API!"));
+            });
 
             app.UseInfrastructure();
         }

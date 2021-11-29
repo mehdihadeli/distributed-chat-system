@@ -23,7 +23,7 @@ namespace Chat.Console
         static async Task Main(string[] args)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
                 .AddJsonFile("appsettings.json", optional: false);
 
             IConfiguration config = builder.Build();

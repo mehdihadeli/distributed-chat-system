@@ -26,9 +26,6 @@ namespace Chat.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<INatsBus, NatsBus>();
-            services.AddOptions<NatsOptions>().Bind(Configuration.GetSection("NatsOptions"))
-                .ValidateDataAnnotations();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -47,7 +44,7 @@ namespace Chat.Web
                         .AllowAnyOrigin();
                 }));
 
-            services.AddCustomIdentity(Configuration);
+            services.AddInfrastructure(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,6 +78,8 @@ namespace Chat.Web
                 endpoints.MapRazorPages();
                 endpoints.MapHub<ChatHub>("/chatSignalr");
             });
+
+            app.UseInfrastructure();
 
             var bus = app.ApplicationServices.GetRequiredService<INatsBus>();
             var subscription = bus.Subscribe<ChatMessageDto>(message =>
