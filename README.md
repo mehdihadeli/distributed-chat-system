@@ -1,3 +1,5 @@
+
+# Table of Content
 - [Distributed Chat System](#distributed-chat-system)
   - [Chat System - WEB UI](#chat-system---web-ui) 
   - [Chat System - Console](#chat-system---console)
@@ -10,6 +12,7 @@
 For implementing this system I used two different Client UI:
 1) [WEB UI](#chat-system---web-ui): Using MVC .Net Core Application and SignalR (WebSockets) as our client
 2) [Console](#chat-system---console): Using .Net Core Console Application as our client
+
 ## Chat System - WEB UI
 
 When Web & API tiers are separated, it is impossible to directly send a server-to-client message from the HTTP API. This is also true for a microservice architected application. We use the distributed event bus ([NATS](https://nats.io/)) to deliver the message from API application to the web application, then to the client.
@@ -42,6 +45,8 @@ For running NATS on our system we can use [docker-compose.yaml](./docker-compose
 ``` cmd
  docker-compose -f .\docker-compose.yaml up
 ```
+
+
 
 ### WEB UI Client
 For running our system with using [WEB UI](#chat-system---web-ui) we need to run our [MVC Application](./src/Chat.Web) as client and [API](./src/Chat.API) as a service.
@@ -109,4 +114,3 @@ Now for running our API we run this command:
 ``` powershell
 docker run  -p 7001:7001 -p 7000:7000  -e ASPNETCORE_Kestrel__Certificates__Default__Password="000000" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v $env:USERPROFILE\.aspnet\https:/https/ chat.api
 ```
-

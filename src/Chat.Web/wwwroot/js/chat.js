@@ -65,7 +65,7 @@ function sendMessage(senderUserName, sender, e) {
                 + currentdate.getHours() + ":"
                 + currentdate.getMinutes() + ":"
                 + currentdate.getSeconds();
-            $('#MessageList').append(`<li style="color: #34ce57"><i class="fas fa-cloud-upload-alt"></i> ${datetime} - ${senderUserName}: ${message}</li>`);
+            $('#MessageList').append(`<li style="color: #34ce57"><i class="fas fa-cloud-upload-alt"></i> ${datetime} - ${senderUserName} to ${targetUserName}: ${message}</li>`);
         },
         error: function (request, status, error) {
             Swal.fire({
@@ -94,7 +94,7 @@ function loadInitialMessagesForUser(userName, numberOfMessages) {
                     + date.getMinutes() + ":"
                     + date.getSeconds();
                 if (chatMessage.senderUserName === userName)
-                    $('#MessageList').append(`<li style="color: #34ce57"><i class="fas fa-cloud-upload-alt"></i> ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</li>`);
+                    $('#MessageList').append(`<li style="color: #34ce57"><i class="fas fa-cloud-upload-alt"></i> ${datetime} - ${chatMessage.senderUserName}  to ${chatMessage.targetUserName}: ${chatMessage.message}</li>`);
                 else
                     $('#MessageList').append(`<li style="color: dodgerblue"><i class="fas fa-cloud-download-alt"></i> ${datetime} - ${chatMessage.senderUserName}: ${chatMessage.message}</li>`);
             });

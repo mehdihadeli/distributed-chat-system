@@ -69,7 +69,7 @@ namespace Chat.Console
                     {
                         System.Console.ForegroundColor = ConsoleColor.Red;
                         System.Console.WriteLine(
-                            $"-> {chatMessageDto.MessageDate} - {chatMessageDto.SenderUserName}: {chatMessageDto.Message}");
+                            $"-> {chatMessageDto.MessageDate} - {chatMessageDto.SenderUserName} to {chatMessageDto.TargetUserName}: {chatMessageDto.Message}");
                         System.Console.ResetColor();
                     }
                     else
@@ -112,11 +112,17 @@ namespace Chat.Console
             };
 
             var response = await client.PostAsJsonAsync("api/chat/send-message", sendMessageDto);
+
+
+
+
+
+            
             response.EnsureSuccessStatusCode();
 
             System.Console.ForegroundColor = ConsoleColor.Red;
             System.Console.WriteLine(
-                $"-> {DateTime.Now} - {sendMessageDto.SenderUserName}: {sendMessageDto.Message}");
+                $"-> {DateTime.Now} - {sendMessageDto.SenderUserName} to {sendMessageDto.TargetUserName}: {sendMessageDto.Message}");
             System.Console.ResetColor();
         }
 

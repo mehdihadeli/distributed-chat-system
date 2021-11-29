@@ -89,7 +89,7 @@ namespace Chat.Web
                 hubContext.Clients
                     .User(message.TargetUserName)
                     .SendAsync("SendForReceiveMessage", message);
-            }, nameof(ChatMessage).Underscore());
+            }, subjectName: nameof(ChatMessage).Underscore());
         }
     }
 }
