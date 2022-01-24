@@ -6,7 +6,6 @@ using Chat.Infrastructure.ChatData;
 using Chat.Infrastructure.Data;
 using Chat.Infrastructure.IdentityData;
 using Chat.Infrastructure.Nats;
-using Chat.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +21,7 @@ namespace Chat.Infrastructure
         {
             AddCustomIdentity(services, configuration);
 
-            services.AddTransient<IChatRepository, InMemoryChatRepository>();
+            services.AddTransient<IChatRepository, EFChatRepository>();
             services.AddTransient<IIdentityRepository, IdentityRepository>();
             services.AddSingleton<INatsBus, NatsBus>();
 

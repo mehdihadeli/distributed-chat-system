@@ -12,14 +12,14 @@ services:
       - "4222:4222"
       - "8222:8222"
       - "6222:6222"    
-  
-  sqlexpress:
+  db:
+    container_name: sqldb
     image: mcr.microsoft.com/mssql/server:2019-latest
-    environment:
-        - ACCEPT_EULA=Y
-        - SA_PASSWORD=Your_password123
     ports:
-        - "1433:1433"
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "@Aa123456"
+      ACCEPT_EULA: "Y"
       
   chat.api:
     container_name: chat.api
@@ -34,7 +34,7 @@ services:
     restart: on-failure
     depends_on:
       - nats
-      - sqlexpress
+      - db
     build: 
       context: .
       dockerfile: API.Dockerfile
@@ -52,7 +52,7 @@ services:
     restart: on-failure
     depends_on:
       - nats
-      - sqlexpress
+      - db
     build: 
       context: .
       dockerfile: Web.Dockerfile
